@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BlueShelf</title>
+<meta name="description" content="A free, private library and player for your adult video collection on Windows. VR, duplicates, headset streaming. No account, no telemetry.">
+<meta name="rating" content="adult">
+<link rel="canonical" href="https://blueshelf.me/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ef4f4f'/%3E%3Cg stroke='%23fff' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M8 11h16M8 16h16M8 21h10'/%3E%3C/g%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BlueShelf">
+<meta property="og:url" content="https://blueshelf.me/">
+<meta property="og:title" content="BlueShelf — a library and player for your porn collection">
+<meta property="og:description" content="Free for Windows. Sorts itself out from your file names, plays everything including VR, finds duplicates, streams to a Quest. Everything stays on your PC.">
+<meta property="og:image" content="https://blueshelf.me/screenshot-library.png">
+<meta property="og:image:alt" content="The BlueShelf library window, showing performers, studios and a grid of videos.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f6f8;
+  --surface: #ffffff;
+  --surface-2: #eef0f4;
+  --text: #16181d;
+  --muted: #5b616e;
+  --line: #dfe2e8;
+  --accent: #ef4f4f;
+  --accent-hover: #d93d3d;
+  --accent-soft: #fde7e7;
+  --on-accent: #ffffff;
+  --shadow: 0 1px 2px rgba(20,22,30,.06), 0 12px 40px rgba(20,22,30,.10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1115;
+    --surface: #171a20;
+    --surface-2: #1e222a;
+    --text: #eceef2;
+    --muted: #9aa1ae;
+    --line: #2a2f39;
+    --accent: #f26161;
+    --accent-hover: #ff7575;
+    --accent-soft: #3a1c1f;
+    --on-accent: #ffffff;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 40px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1115; --surface: #171a20; --surface-2: #1e222a; --text: #eceef2; --muted: #9aa1ae;
+  --line: #2a2f39; --accent: #f26161; --accent-hover: #ff7575; --accent-soft: #3a1c1f;
+  --on-accent: #ffffff; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 40px rgba(0,0,0,.45);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; height: auto; display: block; }
+code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; background: var(--surface-2); padding: .1em .35em; border-radius: 4px; overflow-wrap: anywhere; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+/* Nav */
+header.nav {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+header.nav .wrap { display: flex; align-items: center; gap: 24px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; color: var(--text); letter-spacing: -.01em; }
+.brand:hover { text-decoration: none; }
+.brand-mark { width: 26px; height: 26px; border-radius: 7px; background: var(--accent); display: grid; place-items: center; }
+.brand-mark svg { width: 16px; height: 16px; }
+nav.links { display: none; gap: 22px; margin-left: auto; font-size: 15px; }
+nav.links a { color: var(--muted); font-weight: 500; }
+nav.links a:hover { color: var(--text); text-decoration: none; }
+.nav-cta { margin-left: auto; }
+@media (min-width: 820px) { nav.links { display: flex; } .nav-cta { margin-left: 0; } }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 15px;
+  border: 1px solid transparent; cursor: pointer; white-space: nowrap;
+}
+.btn:hover { text-decoration: none; }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: var(--surface); color: var(--text); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--muted); }
+.btn-sm { padding: 8px 14px; font-size: 14px; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* Hero */
+.hero { padding: 64px 0 40px; text-align: center; }
+.eyebrow { display: inline-block; font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 999px; margin-bottom: 20px; }
+h1 { font-size: clamp(34px, 6vw, 60px); line-height: 1.05; letter-spacing: -.03em; margin: 0 auto 18px; max-width: 16ch; font-weight: 800; }
+.lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 40em; margin: 0 auto 32px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.fine { font-size: 14px; color: var(--muted); margin-top: 16px; }
+.shot { margin: 48px auto 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--surface); }
+
+/* Sections */
+section { padding: 72px 0; }
+section.alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+h2 { font-size: clamp(26px, 3.6vw, 38px); letter-spacing: -.02em; line-height: 1.15; margin: 0 0 12px; font-weight: 800; }
+.section-lede { color: var(--muted); font-size: 18px; max-width: 42em; margin: 0 0 40px; }
+h3 { font-size: 17px; margin: 0 0 6px; font-weight: 700; }
+
+.grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .grid.three { grid-template-columns: repeat(3, 1fr); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+section.alt .card { background: var(--bg); }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.icon { width: 36px; height: 36px; border-radius: 9px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin-bottom: 14px; }
+.icon svg { width: 20px; height: 20px; }
+
+/* Split rows */
+.split { display: grid; gap: 40px; align-items: center; }
+@media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; gap: 56px; } }
+.checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.checks li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; }
+.checks li::before { content: ""; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef4f4f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/13px no-repeat; margin-top: 2px; }
+.checks b { display: block; }
+.checks span { color: var(--muted); font-size: 15px; }
+
+.panel { background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+.panel h3 { font-size: 19px; }
+.devices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.chip { font-size: 13px; font-weight: 500; padding: 5px 11px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+
+/* Install */
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 16px; }
+.steps li::before { content: counter(s); width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: 700; display: grid; place-items: center; }
+.steps p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.note { border-left: 3px solid var(--accent); background: var(--surface); padding: 16px 18px; border-radius: 0 10px 10px 0; font-size: 15px; color: var(--muted); }
+.note b { color: var(--text); }
+
+
+/* FAQ */
+details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+details:first-of-type { border-top: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 600; font-size: 17px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--muted); font-weight: 400; font-size: 22px; line-height: 1; }
+details[open] summary::after { content: "–"; }
+details p { color: var(--muted); margin: 10px 0 0; max-width: 48em; }
+
+footer { padding: 40px 0 56px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+      BlueShelf
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#features">Features</a>
+      <a href="#vr">VR &amp; headsets</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-ghost btn-sm nav-cta" href="https://github.com/BlueShelfApp/blueshelf/releases/latest">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M6 11l6 6 6-6M4 21h16"/></svg>
+      Download
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero wrap">
+    <span class="eyebrow">Free for Windows · Version 0.1.0</span>
+    <h1>A library and player for your porn collection</h1>
+    <p class="lede">
+      Point it at your folders and it works out performers, studios, dates and categories from the
+      names you already have. It plays everything, VR included, finds duplicates, and helps you clear
+      out what you no longer want. Everything stays on your PC.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/BlueShelfApp/blueshelf/releases/latest">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M6 11l6 6 6-6M4 21h16"/></svg>
+        Download for Windows
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/BlueShelfApp/blueshelf">View the source</a>
+    </div>
+    <p class="fine">Free, with every feature. No account, no ads, no telemetry. Open source under GPL-3.0.</p>
+
+    <div class="shot">
+      <img src="screenshot-library.png" width="2100" height="1290"
+           alt="The BlueShelf library window: a sidebar of performers and studios, a grid of video thumbnails, and a details panel with rating, categories and VR settings.">
+    </div>
+  </div>
+
+  <section id="features" class="alt">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p class="section-lede">Built for a large collection that grew without a plan: thousands of files, inconsistent names, several drives.</p>
+      <div class="grid three">
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+          <h3>Sorts itself out</h3>
+          <p>Reads file and folder names to fill in performers, studios, release dates and categories. Works on local drives and network shares.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <h3>Plays anything</h3>
+          <p>Built on mpv, with hardware decoding. Resumes where you stopped and keeps favourites, ratings and play counts. MPC-style shortcuts.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+          <h3>VR done properly</h3>
+          <p>180°, 360° and fisheye videos are detected and shown as a normal flat picture. Drag to look around and scroll to zoom. No more two warped halves.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></div>
+          <h3>Finds duplicates</h3>
+          <p>Catches identical copies, and the same scene re-encoded at another resolution. The lower-quality copy is selected for deletion.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4L8 20H4v-4z"/></svg></div>
+          <h3>Tidies up names</h3>
+          <p>Suggests merging spellings of the same performer and spots titles that were mistaken for names. Your own edits are never overwritten.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></div>
+          <h3>Cleanup mode, and a safe delete</h3>
+          <p>Watch, then press one key to keep or delete, and it moves to the next. Deleted videos go to a hidden trash on the same drive until you empty it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vr">
+    <div class="wrap split">
+      <div>
+        <h2>Watch on your Quest, phone or TV</h2>
+        <p class="section-lede" style="margin-bottom:28px">BlueShelf can serve your library on your own network. Nothing goes over the internet.</p>
+        <ul class="checks">
+          <li><div><b>Browse by performer in the headset browser</b><span>Open an address in the Quest browser and your whole library is there. Tap VR and the scene wraps around you.</span></div></li>
+          <li><div><b>Delete while you watch</b><span>Pull the trigger for a panel with play, seek, favourite and delete. No VR player lets you get rid of a scene mid-watch; this does.</span></div></li>
+          <li><div><b>DLNA for DeoVR, Skybox and HereSphere</b><span>BlueShelf appears in their media-server list, laid out like the sidebar. VR scenes open in the right projection by themselves.</span></div></li>
+          <li><div><b>Passthrough copies</b><span>Turn an ordinary VR scene into a passthrough one, so the performer appears in your room. Uses the separate VRAutoMatte tool and an NVIDIA card, and can split the work across several PCs.</span></div></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Works with</h3>
+        <p style="margin:0;color:var(--muted);font-size:15px">Anything with a browser on your network, and anything that reads a DLNA media server.</p>
+        <div class="devices">
+          <span class="chip">Meta Quest</span><span class="chip">DeoVR</span><span class="chip">Skybox</span>
+          <span class="chip">HereSphere</span><span class="chip">Phones &amp; tablets</span><span class="chip">Smart TVs</span>
+          <span class="chip">Consoles</span><span class="chip">VLC</span><span class="chip">Kodi</span>
+        </div>
+        <p class="fine" style="text-align:left;margin-top:20px">Sharing is off until you turn it on. The browser page asks for a passcode that is part of its address, and videos you hide are never shared.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2>Private by design</h2>
+      <p class="section-lede">A tool like this only works if you can trust it. So it is built to need nothing from you.</p>
+      <div class="grid">
+        <div class="card"><h3>No account, no internet, no telemetry</h3><p>Nothing phones home. It works the same with the network cable pulled out.</p></div>
+        <div class="card"><h3>Your files are never touched</h3><p>Videos are never renamed, modified or moved. What BlueShelf learns about them is kept separately in <code>%LOCALAPPDATA%\BlueShelf</code>.</p></div>
+        <div class="card"><h3>Backups in one small file</h3><p>Performers, ratings, favourites, resume points and thumbnails are backed up once a week, and restore onto a new PC.</p></div>
+        <div class="card"><h3>Open source</h3><p>Released under the GPL-3.0, with the source published alongside every release. Read it, or build it yourself.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap split">
+      <div>
+        <h2>Install</h2>
+        <p class="section-lede" style="margin-bottom:28px">Windows 10 or 11, 64-bit. About 400 MB of disk space, and a reasonably modern graphics card for smooth 4K and 8K VR.</p>
+        <ol class="steps">
+          <li><div><b>Download the installer</b><p><code>BlueShelfSetup-0.1.0.exe</code> from the <a href="https://github.com/BlueShelfApp/blueshelf/releases/latest">releases page</a>. It installs for your user only and does not ask for administrator rights.</p></div></li>
+          <li><div><b>Get past SmartScreen</b><p>Windows shows “Windows protected your PC”. Click <b>More info</b>, then <b>Run anyway</b>.</p></div></li>
+          <li><div><b>Add a video folder</b><p>A local drive or a network share such as <code>\\nas\videos</code>. The first scan takes a while. It only happens once.</p></div></li>
+        </ol>
+      </div>
+      <div class="note">
+        <p style="margin-top:0"><b>Why the warning?</b> The installer is not code-signed. Signing certificates cost hundreds a year, which is more than a free tool can justify.</p>
+        <p style="margin-bottom:0">To check the download first, compare its SHA-256 with the one in the release notes:<br>
+        <code>Get-FileHash BlueShelfSetup-0.1.0.exe -Algorithm SHA256</code></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="alt">
+    <div class="wrap">
+      <h2>Questions</h2>
+      <p class="section-lede">The short answers. The README on the releases page has the long ones.</p>
+      <details><summary>Does it download anything, or look scenes up online?</summary>
+        <p>No. Names are worked out from patterns in your file names, not looked up online, so unusual naming may need correcting by hand. <b>Tools → Review names</b> helps with that, and your corrections are kept.</p></details>
+      <details><summary>My antivirus flagged it. Is it safe?</summary>
+        <p>Apps packaged this way are sometimes flagged, and unsigned ones more often. The source for every release is published, so you can read it or build the installer yourself. You can also compare the SHA-256 against the release notes.</p></details>
+      <details><summary>Mac or Linux?</summary>
+        <p>Not at the moment. BlueShelf is Windows only.</p></details>
+      <details><summary>Will my Quest play 8K?</summary>
+        <p>Usually, but very high-bitrate 8K can be more than a headset browser can decode. DeoVR over DLNA tends to cope better with the biggest files.</p></details>
+      <details><summary>Where is my data kept?</summary>
+        <p>In <code>%LOCALAPPDATA%\BlueShelf</code> on your PC. Uninstalling leaves your videos exactly where they were.</p></details>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>BlueShelf · GPL-3.0 · For adults. This site shows no explicit material.</div>
+    <nav aria-label="Footer">
+      <a href="https://github.com/BlueShelfApp/blueshelf/releases/latest">Download</a>
+      <a href="https://github.com/BlueShelfApp/blueshelf">Source</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/BlueShelfApp/blueshelf/blob/main/THIRD-PARTY-NOTICES.md">Third-party notices</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

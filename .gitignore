@@ -1,0 +1,66 @@
+# ---------------------------------------------------------------------------
+# Video and image files — NEVER commit these.
+#
+# The working tree holds real studio releases and frames extracted from them.
+# Publishing any of it would breach GitHub's terms and infringe copyright, so
+# the rule here is blunt on purpose: no video, anywhere, ever. Widen this list
+# rather than adding exceptions to it.
+# ---------------------------------------------------------------------------
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.wmv
+*.m4v
+*.webm
+*.ts
+
+# Frames, mattes and contact sheets cut from real scenes
+passthrough-tests/
+
+# Generated test library (video fixtures)
+testlib/
+
+# ---------------------------------------------------------------------------
+# Bundled third-party binaries
+#
+# mpv, FFmpeg and Qt ship as DLLs alongside the app. bin/ is 276 MB and
+# libmpv-2.dll alone is 118 MB, over GitHub's 100 MB per-file limit. The
+# upstream projects publish their own builds and source; see
+# THIRD-PARTY-NOTICES.md.
+# ---------------------------------------------------------------------------
+bin/
+
+# ---------------------------------------------------------------------------
+# Build output
+# ---------------------------------------------------------------------------
+dist/
+build/
+*.spec.bak
+*.log
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---------------------------------------------------------------------------
+# Editors and OS
+# ---------------------------------------------------------------------------
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Internal notes and ops runbooks - not for publication
+site/DEPLOY.md
+STATUS.md
+RELEASE-CHECKLIST.md

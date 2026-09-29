@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — BlueShelf</title>
+<meta name="description" content="What BlueShelf and this website store. Almost nothing.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ef4f4f'/%3E%3Cg stroke='%23fff' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M8 11h16M8 16h16M8 21h10'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f6f8; --surface: #ffffff; --surface-2: #eef0f4; --text: #16181d; --muted: #5b616e;
+  --line: #dfe2e8; --accent: #ef4f4f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1115; --surface: #171a20; --surface-2: #1e222a; --text: #eceef2; --muted: #9aa1ae;
+    --line: #2a2f39; --accent: #f26161;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1115; --surface: #171a20; --surface-2: #1e222a; --text: #eceef2; --muted: #9aa1ae;
+  --line: #2a2f39; --accent: #f26161;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.65 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); }
+img { max-width: 100%; height: auto; display: block; }
+code { font: .9em ui-monospace, Consolas, monospace; background: var(--surface-2); padding: .1em .35em; border-radius: 4px; overflow-wrap: anywhere; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 720px) { .wrap { padding: 0 32px; } }
+header { border-bottom: 1px solid var(--line); background: var(--surface); }
+header .wrap { display: flex; align-items: center; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; color: var(--text); text-decoration: none; }
+.brand-mark { width: 26px; height: 26px; border-radius: 7px; background: var(--accent); display: grid; place-items: center; }
+.brand-mark svg { width: 16px; height: 16px; }
+main { padding: 56px 0 72px; }
+h1 { font-size: clamp(30px, 5vw, 42px); letter-spacing: -.02em; margin: 0 0 8px; font-weight: 800; }
+.updated { color: var(--muted); font-size: 15px; margin: 0 0 36px; }
+h2 { font-size: 21px; margin: 40px 0 10px; letter-spacing: -.01em; font-weight: 700; }
+p, li { color: var(--muted); }
+p { margin: 0 0 14px; }
+ul { padding-left: 22px; margin: 0 0 14px; }
+li { margin-bottom: 8px; }
+strong { color: var(--text); }
+.callout { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 18px 20px; margin: 0 0 8px; }
+.callout p:last-child { margin-bottom: 0; }
+footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+footer a { color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+      BlueShelf
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <h1>Privacy</h1>
+    <p class="updated">Last updated 29 September 2026</p>
+
+    <div class="callout">
+      <p><strong>The app collects nothing.</strong> BlueShelf running on your PC has no account, makes
+      no internet connection of its own and sends no telemetry. It never sees what is in your library,
+      and neither does anyone else. Everything it works out about your videos stays in
+      <code>%LOCALAPPDATA%\BlueShelf</code> on your own machine, and your video files are never
+      modified or moved.</p>
+    </div>
+
+    <h2>This website</h2>
+    <p>These are static pages. There is <strong>no account, no sign-up, no comments and no
+    newsletter</strong>, so there is nothing to give us and nothing of yours to store.</p>
+    <p>There are also no analytics, no advertising and no tracking cookies.</p>
+
+    <h2>What the server records</h2>
+    <p>The web server keeps ordinary access logs — the page requested, the time, your IP address and
+    your browser's user-agent string. That is standard for any web server and is used only to
+    investigate faults and abuse. Logs are kept briefly and then deleted.</p>
+
+    <h2>Fonts</h2>
+    <p>The pages load a typeface from Google Fonts, which means Google receives the request and your
+    IP address when a page loads. That is the only third party involved in this site.</p>
+
+    <h2>Downloads</h2>
+    <p>The download button sends you to GitHub, which is a separate service with its own privacy
+    policy. Nothing about your visit here is passed to them beyond the ordinary act of following a
+    link.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about any of this, including anything you would like removed, go to
+    <a href="mailto:BlueShelfApp@proton.me">BlueShelfApp@proton.me</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="https://github.com/BlueShelfApp/blueshelf">Source</a>
+  </div>
+</footer>
+
+</body>
+</html>

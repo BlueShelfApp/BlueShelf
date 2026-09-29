@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BlueShelf</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preload" href="fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/caprasimo-latin.woff2" as="font" type="font/woff2" crossorigin>
+</head>
+<body>
+<header id="bar">
+  <button id="menu-btn" class="icon" title="Performers">☰</button>
+  <strong class="brand">BlueShelf</strong>
+  <input id="search" type="search" placeholder="Search titles, performers, categories" autocomplete="off">
+  <span id="count" class="muted"></span>
+  <button id="theme-btn" class="icon" title="Light or dark">◐</button>
+</header>
+
+<div id="layout">
+  <nav id="side">
+    <div class="side-group">Library</div>
+    <button class="side-item active" data-view="all">All videos</button>
+    <button class="side-item" data-view="recent">Recently added</button>
+    <button class="side-item" data-view="continue">Continue watching</button>
+    <button class="side-item" data-view="favorites">Favorites</button>
+    <button class="side-item" data-view="unwatched">Unwatched</button>
+    <button class="side-item" data-view="vr">VR</button>
+    <div class="side-group">Performers</div>
+    <div id="performers"></div>
+  </nav>
+  <main id="grid"></main>
+</div>
+
+<section id="player" hidden>
+  <video id="video" playsinline preload="metadata"></video>
+  <button id="side-prev" class="side-arrow" title="Previous video" data-act="prev">‹</button>
+  <button id="side-next" class="side-arrow" title="Next video" data-act="next">›</button>
+  <div id="vr-stage" hidden></div>
+  <button id="close" class="shelf-float" title="Back to the library" data-act="close-player"></button>
+  <!-- The Shelf controls: built and kept up to date by app.js from one description, the same one
+       the headset panel is drawn from, so the two never disagree. -->
+  <div id="shelf">
+    <div id="shelf-paused" hidden></div>
+    <div id="shelf-settings" hidden></div>
+    <div id="shelf-collapsed" hidden></div>
+    <div id="shelf-bar"></div>
+  </div>
+</section>
+
+<div id="toast" hidden></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
